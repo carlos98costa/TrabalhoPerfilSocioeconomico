@@ -1,4 +1,3 @@
-import matplotlib.patches as mpatches
 import pandas as pd
 
 import PySimpleGUI as sg
