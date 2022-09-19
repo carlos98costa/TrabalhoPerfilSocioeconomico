@@ -1,14 +1,12 @@
-import codecs
-import os
-import numpy as np
+import matplotlib.patches as mpatches
 import pandas as pd
-import psycopg2
+
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
-import csv
-from pandas import DataFrame
 
-arquivoCSV = sg.popup_get_file('Escolha um arquivo', background_color='DarkOrange1')
+
+#arquivoCSV = sg.popup_get_file('Escolha um arquivo', background_color='DarkOrange1')
+arquivoCSV = 'QUESTIONÁRIO SOCIOECONÔMICO 1.csv'
 df = pd.read_csv(arquivoCSV)
 use_custom_titlebar = False
 
@@ -49,10 +47,12 @@ while True:
     if event == '-LB-':
         gerador = values[event]
         contar = df[gerador]
-        contar.value_counts()
-        plt.pie(contar.value_counts())
+        valoresGrafico = contar.value_counts()
+        plt.pie(valoresGrafico)
+        plt.title(gerador[0])  ##Ok
+        legenda = contar.value_counts()
+        plt.legend(legenda)
         plt.show()
         print(contar)
-
 
 window.close()
