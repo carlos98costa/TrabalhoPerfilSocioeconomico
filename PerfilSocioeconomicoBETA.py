@@ -5,8 +5,7 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 
 
-#arquivoCSV = sg.popup_get_file('Escolha um arquivo', background_color='DarkOrange1')
-arquivoCSV = 'QUESTIONÁRIO SOCIOECONÔMICO 1.csv'
+arquivoCSV = sg.popup_get_file('Escolha um arquivo', background_color='DarkOrange1')
 df = pd.read_csv(arquivoCSV)
 use_custom_titlebar = False
 
