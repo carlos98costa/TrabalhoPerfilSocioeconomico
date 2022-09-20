@@ -1,0 +1,6 @@
+arquivoCSV = sg.popup_get_file (Linha criada para buscar um arquivo do computador e enviar para nosso programa)
+df = pd.read_csv(arquivoCSV) (Linha criada para lêr o arquivo que foi puxado a partir da variavel (arquivoCSV).Obs: Só vai ler arquivos .csv como foi definido)
+listBox = df.columns[1:] (Linha criada para buscar as colunas do formulario(Perguntas). 1: foi definido para pular a primeira coluna onde contem carimbo de hora)
+def make_window(theme=None): (Linha criada para criar uma função onde a tela de interface do nosso programa é criada, e definimos o tema None para a interface iniciar com tema padrão)
+sg.LB {k='-TEMATELA-'} : (Linha criada para buscar todas as perguntas do formulario e gerar um ListBox onde o usuario poderá escolher qual grafico será gerado)
+sg.Combo {k='-TELATEMA-'}: (Linha criada para o usuario poder alterar o tema da tela para sua preferencia)
