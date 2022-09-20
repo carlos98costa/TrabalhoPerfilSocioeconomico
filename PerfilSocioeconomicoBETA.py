@@ -6,14 +6,8 @@ import matplotlib.pyplot as plt
 
 arquivoCSV = sg.popup_get_file('Escolha um arquivo', background_color='Black')
 df = pd.read_csv(arquivoCSV)
-use_custom_titlebar = False
-
 
 listBox = df.columns[1:]
-
-
-
-
 
 def make_window(theme=None):
     NAME_SIZE = 40
@@ -25,17 +19,14 @@ def make_window(theme=None):
     sg.theme(theme)
 
 
-    layout_l = [[name('Selecione o grafico a ser mostrado'),
+    layout_tela = [[sg.T('SOCIOECONÔMICO', font='_ 18', justification='c', expand_x=True)],
+                [name('Selecione o grafico a ser mostrado'),
                  sg.LB(values=listBox[0:85], key='-LB-', bind_return_key=True, enable_events=True, no_scrollbar=True,  s=(80,10)), ],
                 [name('Tema da tela'),
                  sg.Combo(sg.theme_list(), default_value=sg.theme(), s=(15,22), enable_events=True, readonly=True, k='-TEMATELA-')],]
 
 
-    layout = [[sg.MenubarCustom([['File', ['Exit']], ['Edit', ['Edit Me', ]]],  k='-CUST MENUBAR-',p=0)] if use_custom_titlebar else [sg.Menu([['File', ['Exit']], ['Edit', ['Edit Me', ]]],  k='-CUST MENUBAR-',p=0)],
-              [sg.T('SOCIOECONÔMICO', font='_ 18', justification='c', expand_x=True)],
-              [sg.Col(layout_l)]]
-
-    window = sg.Window('Interface Perfil Socioeconômico', layout, finalize=True, right_click_menu=sg.MENU_RIGHT_CLICK_EDITME_VER_EXIT, keep_on_top=True, use_custom_titlebar=use_custom_titlebar)
+    window = sg.Window('Interface Perfil Socioeconômico', layout_tela, finalize=True, right_click_menu=sg.MENU_RIGHT_CLICK_EDITME_VER_EXIT, keep_on_top=True)
 
     return window
 
@@ -61,17 +52,6 @@ while True:
         contar = df[gerador]
         print(contar)
 
-        ##1
-        refItems = []
-        qtdItems = []
-
-        for item in contar:
-            refItems.append(contar.value_counts())
-
-        print(f'Aqui está o refitem {refItems[0]}')
-
-        test1 = refItems[0]
-        indexGraph = contar.value_counts().index
         #index2 = pd.Index(contar)
         #i2Final = index2.value_counts()
         """string = index2
