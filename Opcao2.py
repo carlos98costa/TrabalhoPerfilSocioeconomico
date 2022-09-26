@@ -2,6 +2,7 @@ import pandas as pd
 
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
+import datetime
 
 
 def file_browser_window(theme='Black'):
@@ -59,6 +60,7 @@ while True:
         listBox = df.columns[1:]
         janela1.hide()
         janela2 = make_window()
+        
     elif window == janela1 and event == 'Continuar' and event == '-EXCEL-':
         arquivoXML = values['-FILEBROWSE-']
         df = pd.read_xml(arquivoXML)
@@ -95,15 +97,28 @@ while True:
             string = string.replace(removerXD[x], "")
 
         #print(string)"""
+
         ##02
 
         plt.clf()
         titleGrafico = gerador[0]
+        print(titleGrafico)
         valoresGrafico = contar.value_counts()
-        plt.pie(valoresGrafico, labels=valoresGrafico.index, autopct="%1.2f%%")
-        plt.title(titleGrafico)  ##Ok
-        legenda = contar.value_counts()
+        print(valoresGrafico)
+        #print(valoresGrafico)
+        if event == '-LB-' and titleGrafico == "7-2. Em qual ano você nasceu?":
+            current_time = datetime.datetime.now()
+            idade = (current_time.year - contar).value_counts()
+            plt.title('7-2. Idade')
+            print(idade)
+            #print(contar)
+            plt.pie(idade, labels=idade.index, autopct="%1.2f%%")
+            ##print(idade)
+        #plt.pie(valoresGrafico, labels=valoresGrafico.index, autopct="%1.2f%%")
+        #plt.title(titleGrafico)  ##Ok
+        #legenda = contar.value_counts()
         plt.legend()
         plt.show()
 
+make_window()
 window.close()
