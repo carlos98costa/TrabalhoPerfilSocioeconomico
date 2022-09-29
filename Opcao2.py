@@ -4,6 +4,8 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 import datetime
 
+from matplotlib import rcParams
+
 
 def file_browser_window(theme='Black'):
     sg.theme(theme)
@@ -27,9 +29,7 @@ def make_window(theme='Black'):
 
     layout_tela = [[sg.T('SOCIOECONÔMICO', font='_ 18', justification='c', expand_x=True)],
                 [name('Selecione o grafico a ser mostrado'),
-                 sg.LB(values=listBox[0:], key='-LB-', bind_return_key=True, enable_events=True, no_scrollbar=False,  s=(80,12)), ],
-                #[name('Tema da tela'),
-                 #sg.Combo(sg.theme_list(), default_value=sg.theme(), s=(15,22), enable_events=True, readonly=True, k='-TEMATELA-')],
+                 sg.LB(values=listBox[0:84], key='-LB-', bind_return_key=True, enable_events=True, no_scrollbar=False,  s=(80,12)), ],
                 [sg.Cancel('Voltar', size=(6, 4)), sg.Cancel('Sair', size=(6, 4))]]
 
 
@@ -57,7 +57,29 @@ while True:
     if window == janela1 and event == 'Continuar':
         arquivoCSV = values['-FILEBROWSE-']
         df = pd.read_csv(arquivoCSV)
+        df.drop('3. Informe os 7 últimos dígitos do seu RA: (109nnnxxxxxxx) ', inplace=True, axis=1)
+        df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [Em casa]', inplace=True, axis=1)
+        df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [No trabalho]', inplace=True, axis=1)
+        df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [Na escola]', inplace=True, axis=1)
+        df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [Em outros lugares]', inplace=True, axis=1)
+        df.drop('23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para trabalhos profissionais:]', inplace=True, axis=1)
+        df.drop('23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para trabalhos escolares:]', inplace=True,
+                axis=1)
+        df.drop('23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para entretenimento (músicas, vídeos, redes sociais, etc):]', inplace=True,
+                axis=1)
+        df.drop('23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para comunicação por e-mail:]', inplace=True,
+                axis=1)
+        df.drop(
+            '23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para operações bancárias:]',
+            inplace=True,
+            axis=1)
+        df.drop(
+            '23-2.Com qual finalidade você utiliza microcomputadores (notebooks e desktops)? [Para compras eletrônicas:]',
+            inplace=True,
+            axis=1)
+        df.rename(columns={'7-2. Em qual ano você nasceu?':'7-2. Idade'}, inplace=True)
         listBox = df.columns[1:]
+
         janela1.hide()
         janela2 = make_window()
         
@@ -65,6 +87,7 @@ while True:
         arquivoXML = values['-FILEBROWSE-']
         df = pd.read_xml(arquivoXML)
         listBox = df.columns[1:]
+        del listBox[0:5]
         janela1.hide()
         janela2 = make_window()
 
@@ -73,20 +96,13 @@ while True:
         janela2.close()
         janela1.un_hide()
 
-    #theme change
-    """if values['-TEMATELA-'] != sg.theme():
-        sg.theme(values['-TEMATELA-'])
-
-        janela2.close()
-        janela2 = make_window()"""
-
     if window == janela2 and event == '-LB-':
         ##0
         gerador = values[event]
         contar = df[gerador]
 
         ##1
-        indexGraph = contar.value_counts().index
+        #indexGraph = contar.value_counts().index
         #index2 = pd.Index(contar)
         #i2Final = index2.value_counts()
         """string = index2
@@ -99,25 +115,33 @@ while True:
         #print(string)"""
 
         ##02
-
+        params = {
+            'legend.fontsize': 8,
+            'legend.loc': 'upper left',
+            'legend.framealpha': 0.1,
+            'legend.handlelength': 1.0,
+            'legend.handleheight': 0.7
+            # 'legend.handlelength': 2
+        }
+        plt.rcParams.update(params)
         plt.clf()
         titleGrafico = gerador[0]
-        print(titleGrafico)
         valoresGrafico = contar.value_counts()
-        print(valoresGrafico)
         #print(valoresGrafico)
-        if event == '-LB-' and titleGrafico == "7-2. Em qual ano você nasceu?":
+        if event == '-LB-' and titleGrafico == "7-2. Idade":
             current_time = datetime.datetime.now()
             idade = (current_time.year - contar).value_counts()
-            plt.title('7-2. Idade')
-            print(idade)
-            #print(contar)
-            plt.pie(idade, labels=idade.index, autopct="%1.2f%%")
-            ##print(idade)
-        #plt.pie(valoresGrafico, labels=valoresGrafico.index, autopct="%1.2f%%")
-        #plt.title(titleGrafico)  ##Ok
-        #legenda = contar.value_counts()
-        plt.legend()
+            plt.title(titleGrafico)
+            plt.pie(idade, autopct="%1.2f%%")
+            plt.legend(idade.index)
+        else:
+            plt.pie(valoresGrafico, autopct="%1.2f%%")
+            plt.title(titleGrafico)  ##Ok
+            legenda = contar.value_counts()
+            plt.legend(valoresGrafico.index)
+
+        #plt.get_current_fig_manager().full_screen_toggle()
+
         plt.show()
 
 make_window()
