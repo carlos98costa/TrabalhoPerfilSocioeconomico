@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from datetime import datetime, date
 
 
+##CRIAR TELAS
+
 def make_window(theme='Dark'):
     NAME_SIZE = 40
 
@@ -48,10 +50,10 @@ while True:
 
     if window == janela1 and event == 'Continuar':
         arquivoCSV = values['-FILEBROWSE-']
-        arquivo = open(arquivoCSV)
+        arquivo = open(arquivoCSV, "r", encoding='utf-8')
         df = pd.read_csv(arquivoCSV)
 
-
+        #################DROPAR COLUNAS
         df.drop('3. Informe os 7 últimos dígitos do seu RA: (109nnnxxxxxxx) ', inplace=True, axis=1)
         df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [Em casa]', inplace=True, axis=1)
         df.drop('23-1 .Onde você utiliza microcomputadores (notebooks e desktops)? [No trabalho]', inplace=True, axis=1)
@@ -87,7 +89,9 @@ while True:
             axis=1)
 
         df.rename(columns={df.columns[7]: '7. Em qual dia você nasceu?'}, inplace=True)
-        ##TRATAR IDADE
+
+
+        ########TRATAR DADOS DA IDADE
         linhas = csv.reader(arquivo)
         listaDias = []
         for linha in linhas:
@@ -109,7 +113,7 @@ while True:
                 linha[8] = "08"
             if linha[8] == "9":
                 linha[8] = "09"
-                ######
+                ###### SEPARAÇÃO
             if linha[9] == "Janeiro":
                 linha[9] = "01"
             if linha[9] == "Fevereiro":
@@ -149,22 +153,21 @@ while True:
         idade = []
 
         for tamanho in listaDias[1:]:
-            # print(tamanho)
             dataNew = (f'{tamanho[0]}/{tamanho[1]}/{tamanho[2]}')
-
             data = datetime.strptime(dataNew, '%d/%m/%Y')
-
             idade.append(calculateAge(data))
 
 
 
-        ###
+        ####CRIANDO A COLUNA IDADES
         df.insert(1, '0. Idades?', idade, allow_duplicates=True)
+        #CRIANDO A LISTA DE COLUNAS A SEREM LIDAS
         listBox = df.columns[1:]
 
         janela1.hide()
         janela2 = make_window()
 
+    ###NAO USANDO POR ENQUANTO
     elif window == janela1 and event == 'Continuar' and event == '-EXCEL-':
         arquivoXML = values['-FILEBROWSE-']
         df = pd.read_xml(arquivoXML)
@@ -178,12 +181,14 @@ while True:
         janela2.close()
         janela1.un_hide()
 
+
+    #GERANDO A LISTBOX(AS PERGUNTAS)
     if window == janela2 and event == '-LB-':
         ##0
         gerador = values[event]
         contar = df[gerador]
 
-        ##1
+        ##FORMATANDO O MATPLOIT(PARAMETROS)
         params = {
             'legend.fontsize': 8,
             'legend.loc': 'upper right',
@@ -191,15 +196,24 @@ while True:
             'legend.handlelength': 1.0,
             'legend.handleheight': 0.7
         }
+        #CHAMANDO PARAMETROS
         plt.rcParams.update(params)
+        ###LIMPANDO GRAFICOS ANTERIORES
         plt.clf()
+        #PEGANDO A LOCALIZAÇÃO DOS TITULOS DO GRAFICO
         titleGrafico = gerador[0]
+        #CONTAGEM DE VALORES
         valoresGrafico = contar.value_counts()
+        ##GERANDO O GRAFICO
         plt.pie(valoresGrafico, autopct="%1.2f%%")
+        #MOSTRA OS TITULOS DOS GRAFICOS EM RELAÇÃO A LOCALIZAÇÃO
         plt.title(titleGrafico)  ##Ok
+        ##CONTANDO AS LEGENDAS
         legenda = contar.value_counts()
+        ##GERANDO AS LEGENDAS A PARTIR DO CONTADOR
         plt.legend(valoresGrafico.index)
 
+    ###MOSTRAR O GRAFICO GERADO
     plt.show()
-
+##
 window.close()
