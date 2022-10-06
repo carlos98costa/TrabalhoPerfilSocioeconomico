@@ -2,11 +2,9 @@ import PySimpleGUI as sg
 
 def file_browser_window(theme):
     sg.theme(theme)
-    layout_fb = [[sg.Input(), sg.FileBrowse('Escolha um arquivo', k='-FILEBROWSE-')],
-                  #[sg.Text("Tipo do arquivo:"),
-                   #sg.Radio("Ler CSV", "TypeFile", default=True, size=(8, 4), k='-CSV-'),
-                 #sg.Radio("Ler Excel", "TypeFile", size=(8, 4), k='-EXCEL-')],
-                 [sg.Ok('Continuar'), sg.Cancel('Sair')]
+    layout_fb = [[sg.T('SOCIOECONÔMICO', font='_ 18', justification='c', expand_x=True)],
+                [sg.T('Escolha um arquivo') , sg.Input(), sg.FileBrowse('Escolha um arquivo', k='-FILEBROWSE-', button_color='gray')],
+                 [sg.Ok('Continuar', button_color='gray'), sg.Cancel('Sair', button_color='red')]
 
                  ]
 

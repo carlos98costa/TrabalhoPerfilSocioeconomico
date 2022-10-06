@@ -5,11 +5,14 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 from datetime import datetime, date
 
+import tela_inicial
+
 
 ##CRIAR TELAS
 
 def make_window(theme='Dark'):
     NAME_SIZE = 40
+
 
     def name(name):
         dots = NAME_SIZE - len(name) - 2
@@ -17,11 +20,11 @@ def make_window(theme='Dark'):
 
     sg.theme(theme)
 
-    layout_tela = [[sg.T('SOCIOECONÔMICO', font='_ 18', justification='c', expand_x=True)],
+    layout_tela = [[sg.T('SOCIOECONÔMICO', font='18', justification='c', expand_x=True)],
                    [name('Selecione o grafico a ser mostrado'),
                     sg.LB(values=listBox[0:], key='-LB-', bind_return_key=True, enable_events=True,
                           no_scrollbar=False, s=(80, 12)), ],
-                   [sg.Cancel('Voltar', size=(6, 4)), sg.Cancel('Sair', size=(6, 4))]]
+                   [sg.Cancel('Voltar', size=(6, 4), button_color='gray'), sg.Cancel('Sair', size=(6, 4), button_color='red')]]
 
     return sg.Window('Perfil Socioeconômico - Gerar graficos', layout_tela, finalize=True, size=(800, 300))
 
@@ -33,7 +36,7 @@ def calculateAge(birthDate):
     return age
 
 # Start of the program...
-janela1, janela2 = tela_1.file_browser_window('Dark'), None
+janela1, janela2, janela3 = None, None, tela_inicial.tela_inicial('Dark')
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -47,7 +50,22 @@ while True:
         break
     if window == janela2 and event == 'Sair':
         break
+    if window == janela3 and event == sg.WIN_CLOSED:
+        break
+    if window == janela3 and event == 'Sair':
+        break
 
+    if window == janela3 and event == 'Sobre':
+        sg.popup('Sobre o programa', 'Programa feito para tratar o arquivo CSV coletado na primeira etapa do trabalho!', font='18')
+    if window == janela3 and event == 'Equipe':
+        sg.popup('Nossa equipe:','Adriano', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter', font=10, text_color='white' )
+    if window == janela3 and event == 'Documentação':
+        sg.popup('Documentação', 'Em breve!', font='18')
+
+
+    if window == janela3 and event == 'Continuar':
+        janela3.hide()
+        janela1 = tela_1.file_browser_window('Dark')
     if window == janela1 and event == 'Continuar':
         arquivoCSV = values['-FILEBROWSE-']
         arquivo = open(arquivoCSV, "r", encoding='utf-8')
