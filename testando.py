@@ -56,20 +56,26 @@ while True:
         break
 
     if window == janela3 and event == 'Sobre':
-        sg.popup('Sobre o programa', 'Programa feito para tratar o arquivo CSV coletado na primeira etapa do trabalho!', font='18')
+        sg.popup('Sobre o programa', 'Programa feito para tratar o arquivo CSV coletado na primeira etapa do trabalho!', font='18', title='Sobre')
     if window == janela3 and event == 'Equipe':
-        sg.popup('Nossa equipe:','Adriano', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter', font=10, text_color='white' )
+        sg.popup('Nossa equipe:','Adriano', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter', font=10, text_color='white', title='Equipe' )
     if window == janela3 and event == 'Documentação':
-        sg.popup('Documentação', 'Em breve!', font='18')
+        sg.popup('Documentação', 'Em breve!', font='18', title='Documentação')
 
 
     if window == janela3 and event == 'Continuar':
         janela3.hide()
         janela1 = tela_1.file_browser_window('Dark')
+    if window == janela1 and event == 'Voltar':
+        janela1.hide()
+        janela3.un_hide()
     if window == janela1 and event == 'Continuar':
         arquivoCSV = values['-FILEBROWSE-']
+        if values['-FILEBROWSE-'] == '':
+            sg.popup('Nenhum arquivo foi selecionado, o programa será encerrado!', title='Erro')
         arquivo = open(arquivoCSV, "r", encoding='utf-8')
         df = pd.read_csv(arquivoCSV)
+
 
         #################DROPAR COLUNAS
         df.drop('3. Informe os 7 últimos dígitos do seu RA: (109nnnxxxxxxx) ', inplace=True, axis=1)
@@ -178,7 +184,7 @@ while True:
 
 
         ####CRIANDO A COLUNA IDADES
-        df.insert(1, '0. Idades?', idade, allow_duplicates=True)
+        df.insert(3, '3. Idades?', idade, allow_duplicates=True)
         #CRIANDO A LISTA DE COLUNAS A SEREM LIDAS
         listBox = df.columns[1:]
 

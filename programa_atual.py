@@ -21,7 +21,7 @@ def make_window(theme='Dark'):
                    [name('Selecione o grafico a ser mostrado'),
                     sg.LB(values=listBox[0:], key='-LB-', bind_return_key=True, enable_events=True,
                           no_scrollbar=False, s=(80, 12)), ],
-                   [sg.Cancel('Voltar', size=(6, 4)), sg.Cancel('Sair', size=(6, 4))]]
+                   [sg.Cancel('Voltar', size=(6, 4), button_color='gray'), sg.Cancel('Sair', size=(6, 4), button_color='red')]]
 
     return sg.Window('Perfil Socioeconômico - Gerar graficos', layout_tela, finalize=True, size=(800, 300))
 

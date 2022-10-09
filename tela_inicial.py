@@ -6,6 +6,7 @@ def tela_inicial(theme):
     menu_def = [["Ajuda", ["Sobre", "Equipe", "Documentação", "Sair"]]]
     layout_inicial = [[sg.MenubarCustom(menu_def, tearoff=False, background_color='gray')],
                     [sg.T('Bem-vindo ao programa!', font='_ 30', justification='c', expand_x=True)],
+                      #[sg.Image('logo_fatec.png')],
                     [sg.Ok('Continuar', button_color='gray'), sg.Cancel('Sair', button_color='red')]
 
                  ]
