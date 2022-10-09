@@ -160,7 +160,7 @@ while True:
 
 
         ####CRIANDO A COLUNA IDADES
-        df.insert(1, '0. Idades?', idade, allow_duplicates=True)
+        df.insert(3, '3. Idades?', idade, allow_duplicates=True)
         #CRIANDO A LISTA DE COLUNAS A SEREM LIDAS
         listBox = df.columns[1:]
 
