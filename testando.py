@@ -26,16 +26,16 @@ def make_window(theme='Dark'):
 
 
 
-    layout_tela = [[sg.T('SOCIOECONÔMICO', font='18', justification='c', expand_x=True)],
+    layout_tela = [[sg.T('Perfil Socioeconômico', font='18', justification='c', expand_x=True)],
                    [name('Selecione o grafico a ser mostrado'),
                     sg.LB(values=get_file_list(), key='-LB-', bind_return_key=True, enable_events=True,
-                          no_scrollbar=False, s=(80, 12), background_color='#4D4B4B'), ],
+                          no_scrollbar=False, s=(85, 12), background_color='#4D4B4B'), ],
                    [name('Buscar grafico pelo nome'),
                     sg.Input(size=(25, 1), enable_events=True, key='-FILTER-'),
                     sg.T(size=(15, 1), k='-FILTER NUMBER-')],
-                   [sg.Cancel('Voltar', size=(6, 4), button_color='gray'), sg.Cancel('Sair', size=(6, 4), button_color='red')]]
+                   [sg.Cancel('Voltar', button_color='gray'), sg.Cancel('Sair', button_color='red')]]
 
-    return sg.Window('Perfil Socioeconômico - Gerar graficos', layout_tela, finalize=True, size=(800, 300))
+    return sg.Window('Perfil Socioeconômico - Gerar graficos', layout_tela, finalize=True, size=(800, 310))
 
 def calculateAge(birthDate):
     today = date.today()
@@ -70,6 +70,13 @@ while True:
                                      'CSV gerado na primeira etapa do trabalho.', font='18', title='Sobre')
     if window == janela3 and event == 'Equipe':
         sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
+
+    if window == janela1 and event == 'Sobre':
+        sg.popup('Sobre o programa', 'Criação do sistema de processamento de dados, com a finalidade de gerar gráficos informativos a partir do arquivo '
+                                     'CSV gerado na primeira etapa do trabalho.', font='18', title='Sobre')
+    if window == janela1 and event == 'Equipe':
+        sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
+
 
     if window == janela3 and event == 'Continuar':
         janela3.hide()
