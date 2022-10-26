@@ -29,7 +29,7 @@ def make_window(theme='Dark'):
     layout_tela = [[sg.T('Perfil Socioeconômico', font='18', justification='c', expand_x=True)],
                    [name('Selecione o grafico a ser mostrado'),
                     sg.LB(values=get_file_list(), key='-LB-', bind_return_key=True, enable_events=True,
-                          no_scrollbar=False, s=(85, 12), background_color='#4D4B4B'), ],
+                          no_scrollbar=False, s=(85, 12), background_color='#4D4B4B', text_color='white'), ],
                    [name('Buscar grafico pelo nome'),
                     sg.Input(size=(25, 1), enable_events=True, key='-FILTER-'),
                     sg.T(size=(15, 1), k='-FILTER NUMBER-')],
@@ -52,39 +52,42 @@ while True:
     window, event, values = sg.read_all_windows()
 
     # Fechando a interface
-    if window == janela1 and event == sg.WIN_CLOSED:
+    if event == sg.WIN_CLOSED or event == 'Sair':
         break
-    if window == janela1 and event == 'Sair':
-        break
-    if window == janela2 and event == sg.WIN_CLOSED:
-        break
-    if window == janela2 and event == 'Sair':
-        break
-    if window == janela3 and event == sg.WIN_CLOSED:
-        break
-    if window == janela3 and event == 'Sair':
-        break
+
+
+##Gerando mensagens do Menu
 
     if window == janela3 and event == 'Sobre':
         sg.popup('Sobre o programa', 'Criação do sistema de processamento de dados, com a finalidade de gerar gráficos informativos a partir do arquivo '
                                      'CSV gerado na primeira etapa do trabalho.', font='18', title='Sobre')
     if window == janela3 and event == 'Equipe':
-        sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
+        sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
 
     if window == janela1 and event == 'Sobre':
         sg.popup('Sobre o programa', 'Criação do sistema de processamento de dados, com a finalidade de gerar gráficos informativos a partir do arquivo '
                                      'CSV gerado na primeira etapa do trabalho.', font='18', title='Sobre')
     if window == janela1 and event == 'Equipe':
-        sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Lauane Stefanny', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
+        sg.popup('Nossa equipe:','Adriano Rodrigues', 'Carlos Adriano', 'João Pedro', 'Valter Gomes', font=10, text_color='white', title='Equipe' )
 
 
+#Avança para tela de pesquisa
     if window == janela3 and event == 'Continuar':
         janela3.hide()
         janela1 = tela_1.file_browser_window('Dark')
     if window == janela1 and event == 'Voltar':
         janela1.hide()
         janela3.un_hide()
-    if window == janela1 and event == 'Continuar':
+
+#Importa os dados e atualiza a tela
+    if window == janela1 and event == 'Importar':
+        window['-ARQSEL-'].update('Arquivo selecionado com sucesso!', text_color='green')
+        window['-BUTCONT-'].update(disabled=False)
+
+
+
+
+    if window == janela1 and event == '-BUTCONT-':
         arquivoCSV = values['-FILEBROWSE-']
         if values['-FILEBROWSE-'] == '':
             sg.popup('Nenhum arquivo foi selecionado, o programa será encerrado!', title='Erro')
@@ -194,6 +197,7 @@ while True:
     #GERANDO A LISTBOX(AS PERGUNTAS)
     if window == janela2 and event == '-LB-':
         ##0
+
         gerador = values[event]
         contar = df[gerador]
 
