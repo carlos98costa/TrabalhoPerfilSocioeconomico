@@ -39,10 +39,12 @@ def make_window(theme='Dark'):
 
 def calculateAge(birthDate):
     today = date.today()
+
     age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
-
-
+    print(age)
     return age
+
+
 
 # Start of the program...
 janela1, janela2, janela3 = None, None, tela_inicial.tela_inicial('Dark')
@@ -54,7 +56,6 @@ while True:
     # Fechando a interface
     if event == sg.WIN_CLOSED or event == 'Sair':
         break
-
 
 ##Gerando mensagens do Menu
 
@@ -81,8 +82,12 @@ while True:
 
 #Importa os dados e atualiza a tela
     if window == janela1 and event == 'Importar':
-        window['-ARQSEL-'].update('Arquivo selecionado com sucesso!', text_color='green')
-        window['-BUTCONT-'].update(disabled=False)
+        if values['-FILEBROWSE-'] == '':
+            window['-ARQSEL-'].update('Nenhum arquivo foi importado!', text_color='red')
+            window['-BUTCONT-'].update(disabled=True)
+        else:
+            window['-ARQSEL-'].update('Arquivo selecionado com sucesso!', text_color='green')
+            window['-BUTCONT-'].update(disabled=False, button_color='green')
 
 
 
@@ -173,6 +178,7 @@ while True:
             dataNew = (f'{tamanho[0]}/{tamanho[1]}/{tamanho[2]}')
             data = datetime.strptime(dataNew, '%d/%m/%Y')
             idade.append(calculateAge(data))
+
 
         ####CRIANDO A COLUNA IDADES
         df.insert(3, '3. Idades?', idade, allow_duplicates=True)
